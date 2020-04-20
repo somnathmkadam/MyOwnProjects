@@ -1,0 +1,12 @@
+Git: Git clone giturl (Url of repository which detect and create local respositry where all files are present)
+git status show status what changes has been done
+git add filename (Staging area)
+git commit -m 'message'  (Local version control database)
+git log show git history with commit history
+
+git push (Push that in git)
+
+git checkout : to get updates done by others
+
+
+git difftool HEAD (Check changes done in old file and new file)
