@@ -1,0 +1,103 @@
+1. 
+Soap:serices uses xml 
+SoapUI is tool to test soap apis
+https://www.ibm.com/support/knowledgecenter/SSMKHH_10.0.0/com.ibm.etools.mft.doc/ac55780_.htm
+
+2.
+contract of webservices: WSDL
+in wsdlfile: binding gives all services provided by that webservices
+envolpe gives location where exactly this webservices hosted
+wsdl: is xml doc used to describe how to connect and make requests to webservices
+soap msg: xml doc used to transmit your data
+
+3. 
+Run EMP project details:
+1. Goto axis folder- conf folder and check for xml file- open it in notepad++ and check for 8080 and change it to any port avaliable
+2. now got bin and run axistoserver batch file when server started 
+3. Open localhost: 8085 and click on first link to see wsdl file xml doc
+4. Open SoapUI and Add new soap project 
+give name and path of wsdl file
+add all 
+5. Create database: install mysql workbench 
+add 3306 with root root 
+open txt file and add it and execute to create new database
+
+4.
+Test Suite
+Test Case
+Test Step: select invoked request also select sample request format last option to see sample data format
+
+5.
+Goto Assertion and tap on Plus icon to add assertions:
+Assertions: 200 response, contain, not contain, security: import token leaked or not, proper soap response is getting or not, response time 
+300 mili sec
+
+6.
+Check xpath: declare- xpath match- click on declare: //ns: name of node OR //ns:main/ns:sub/ns:exact value
+check perticular value is contains in response or not: exists(//ns:age) check true
+check value comes in response how many times: count(//ns:age)  check with 1 
+If we want to check getting perticular response body is correct or not then:
+//ns:return   (Starting point)- click select from current- select allow wlid cards- add star to those values whos values can be changes in other responses:
+<ns:return xsi:type="ns:Employee" xmlns:ax21="http://exception.reservation.sample.com/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://sample.com/reservation/guest/types" xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+  <ns:age>27</ns:age>
+  <ns:department>IT</ns:department>
+  <ns:id>*</ns:id>
+  <ns:name>*</ns:name>
+</ns:return>
+
+We can run all the test cases at suite level- click on suite and run
+
+7.
+Data driven from test suite:
+create new project- add name and wsdl file- click create test suite for imported wsdl-click ok give name of test suite and Ok
+We can add variable on test suite levels (Accessiable to all test cases) or test case level (accessiable to request present inside test case)
+Add Properties: Click on project/test suite / Test case - select custom properties- add properties
+Remove '?' from request and right click get data from test case/ test suite ex: ${#TestSuite#name}
+
+8.
+Also we can add properties from properties file: write click on test case- add properties- give name- add key and value 
+now goto request - add get data from properties Ex: ${properties#id} where properties is name of file we can give any name accor that it changes
+# symbole is not given becoz its not soapUi internal file
+
+9.
+We can add properties form external- add notepad and give key=value and save it as .properties extension and all files
+now we can add it suite/any level - click on suite- click on custom properties- click load properties from external file and load
+so it automatically added into suite level
+
+10.
+We can move test step from one place to another 'drag and drop' OR clone
+
+11.
+ property Transfer file:
+ Click on step from which we want to transfer
+after that right click and add property transfer file //file will get added after that step
+give name to that file
+give and other details to fetch perticular para
+ex:  
+declare namespace typ='http://sample.com/reservation/guest/types';  //location of request or response
+//typ:addEmployee/typ:name/text()  //location from which we want to fetch data
+
+ desti location: 
+ex: declare namespace typ='http://sample.com/reservation/guest/types';  //location of destination
+//typ:deleteEmployee/typ:employeeName
+now add for all and run as test suite
+We can fetch data from one request to another request by giving path:${addEmployee#//typ:addEmployee/typ:name/text()}
+where addEmployee is step name
+
+
+12. Properties file used to add Properties and fetch directly from file
+Right click on Test Case and add properties file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
