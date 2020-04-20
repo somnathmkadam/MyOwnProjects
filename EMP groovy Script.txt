@@ -1,0 +1,171 @@
+Complete Project Add Emp and Get Emp using Groovy script:
+Project
+TestSuite
+test Case
+Test Steps
+http://localhost:8085/axis2/services/EmployeeManagementService?wsdl
+wsdl file import as a soap project in Soap UI
+1. Goto axis folder- conf folder and check for xml file- open it in notepad++ and check for 8080 and change it to any port avaliable
+2. now got bin and run axistoserver batch file when server started 
+3. Open localhost: 8085 and click on first link to see wsdl file xml doc
+4. Open SoapUI and Add new soap project 
+give name and path of wsdl file
+add all 
+5. Create database: install mysql workbench 
+add 3306 with root root 
+open txt file and add it and execute to create new database
+
+/////////////////////////////////////////////////////////////////////////////////////
+Add Request:
+
+Request:
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:typ="http://sample.com/reservation/guest/types">
+   <soap:Header/>
+   <soap:Body>
+      <typ:addEmployee>
+         <!--Optional:-->
+         <typ:name>Sam888</typ:name>
+         <!--Optional:-->
+         <typ:id>555</typ:id>
+         <!--Optional:-->
+         <typ:Department>IT</typ:Department>
+         <!--Optional:-->
+         <typ:age>25</typ:age>
+      </typ:addEmployee>
+   </soap:Body>
+</soap:Envelope>
+
+Response:
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+   <soapenv:Body>
+      <ns:addEmployeeResponse xmlns:ns="http://sample.com/reservation/guest/types">
+         <ns:return>true</ns:return>
+      </ns:addEmployeeResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Get Request:
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:typ="http://sample.com/reservation/guest/types">
+   <soap:Header/>
+   <soap:Body>
+      <typ:getEmployeeDetails>
+         <!--Optional:-->
+         <typ:employeeName>Sam888</typ:employeeName>
+      </typ:getEmployeeDetails>
+   </soap:Body>
+</soap:Envelope>
+
+
+Response:
+<soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+   <soapenv:Body>
+      <ns:getEmployeeDetailsResponse xmlns:ns="http://sample.com/reservation/guest/types">
+         <ns:return xsi:type="ns:Employee" xmlns:ax21="http://exception.reservation.sample.com/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <ns:age>25</ns:age>
+            <ns:department>IT</ns:department>
+            <ns:id>555</ns:id>
+            <ns:name>Sam888</ns:name>
+         </ns:return>
+      </ns:getEmployeeDetailsResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Groovy Script:
+import com.eviware.soapui.support.XmlHolder  //used to edit xml request and response
+import com.eviware.soapui.impl.wsdl.testcase.WsdlTestRunContext //run test steps
+
+log.info "My name is somnath"  //used to show it on console syso command in groovy
+
+//Scope of this till test case only //scope what is the reach of that command
+
+log.info context.expand('${#TestCase#name}')   //context.expand used to get value (properties) from that perticular area here we fetch value 
+//from Script having name key and value is Sam
+
+//to access properties from another test case we used testRunner
+testRunner.testCase.testSuite.testCases["Get_Emp"].getPropertyValue("id") 
+
+//To show it on console we used log.info
+log.info testRunner.testCase.testSuite.testCases["Get_Emp"].getPropertyValue("id") 
+
+//To access properties within testcase using testRunner
+log.info testRunner.testCase.getPropertyValue("name")
+
+
+//to setvariable value using testRunner
+//first add key in perticular testcase and then put value
+testRunner.testCase.testSuite.testCases["Get_Emp"].setPropertyValue("print","somnath1") 
+
+//Now to get predefined variable from perticular teststeps
+log.info testRunner.testCase.testSuite.testCases["Get_Emp"].testSteps["Get_Emp"].getPropertyValue("Request")
+
+
+//we can access from project level
+def value= testRunner.testCase.testSuite.project  //def value is variable
+log.info value.getPropertyValue("Gender")
+
+..........................................................................................................................
+//to do automation
+def addrequest = testRunner.testCase.testSuite.testCases["Add_Emp"].testSteps["AddEmp"].getPropertyValue("Request")
+//add properties in addEmp
+def name = testRunner.testCase.testSuite.testCases["Add_Emp"].getPropertyValue("name")
+def id =  testRunner.testCase.testSuite.testCases["Add_Emp"].getPropertyValue("id")
+def age= testRunner.testCase.testSuite.testCases["Add_Emp"].getPropertyValue("age")
+
+log.info addrequest
+log.info name
+
+def XmlAdding = new XmlHolder(addrequest) //import package //xml holder used to handel and edit request and response
+
+//now set values in request
+
+XmlAdding.setNodeValue("//typ:addEmployee/typ:name",name)  //xpath is given
+XmlAdding.setNodeValue("//typ:addEmployee/typ:id",id)
+XmlAdding.setNodeValue("//typ:addEmployee/typ:age",age)
+XmlAdding.setNodeValue("//typ:addEmployee/typ:Department","IT")
+
+//set it in request
+def xmlrequest = XmlAdding.getXml();  //get updated xml in one variable
+log.info xmlrequest
+testRunner.testCase.testSuite.testCases["Add_Emp"].testSteps["AddEmp"].setPropertyValue("Request",xmlrequest)
+
+//Now to run perticular xml request use WsdlTestRunContext
+def addtestStep = testRunner.testCase.testSuite.testCases["Add_Emp"].testSteps["AddEmp"]  //get step in one variable
+def contexttestStep = new WsdlTestRunContext(addtestStep); //add that variable in wsdl 
+addtestStep.run(testRunner,contexttestStep) //run using testRunner
+
+//Now we get same name from AddEmp and pass it to getEmp testStep
+def name1 = testRunner.testCase.testSuite.testCases["Add_Emp"].getPropertyValue("name") //fetch name property from Add_Emp test case
+def Getrequest= testRunner.testCase.testSuite.testCases["Get_Emp"].testSteps["Get_Emp"].getPropertyValue("Request") //fetch request from Get_Emp test step
+def XmlGet = new XmlHolder(Getrequest) //put it in xml holder
+XmlGet.setNodeValue("//typ:getEmployeeDetails/typ:employeeName",name1) //modify by adding name fetch from Add_Emp
+
+//Now modified xml put back in request
+def modiXml = XmlGet.getXml()
+testRunner.testCase.testSuite.testCases["Get_Emp"].testSteps["Get_Emp"].setPropertyValue("Request",modiXml)
+
+//now run getstep
+def runGet = testRunner.testCase.testSuite.testCases["Get_Emp"].testSteps["Get_Emp"]
+def contextgetEmployee = new WsdlTestRunContext(runGet); 
+runGet.run(testRunner,contextgetEmployee) //run Get request
+
+
+//now validate reponse of get with request of add by checking name
+def responseOfGet = testRunner.testCase.testSuite.testCases["Get_Emp"].testSteps["Get_Emp"].getPropertyValue("Response") //fecth response
+log.info responseOfGet
+def xmlResGet = new XmlHolder(responseOfGet)
+def GetnameRes= xmlResGet.getNodeValue("//ns:name") //fetch name from response of Get
+
+log.info GetnameRes
+log.info name
+
+assert GetnameRes == name //compare name from Add properties and Get response
+
+
+
+
+
