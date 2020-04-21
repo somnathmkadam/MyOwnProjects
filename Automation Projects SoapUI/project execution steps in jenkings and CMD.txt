@@ -1,0 +1,26 @@
+SoapUI: Project execution:
+1. Copy all jars in lib folder (Jars in lib of soap ui software and soap ui jar in bin folder, j commnder, TestNg jar)
+2. And place it inside the project
+3. Run below commands in CMD 
+goto project location
+javac -classpath lib/*-d./bin./src/Rest/*.java
+
+Where ./src/Rest/*.java is package path where test cases are present
+-classpath lib/* jars present in folder path
+-d/.bin compilation location
+
+Run: 
+java -cp bin;lib/*org.testng.TestNG testng.xml
+run testng xml using org.testng.TestNG package presnet in lib directory
+now refresh project and html report got generated 
+
+
+jenkins project:
+java -jar jenkins.war --ajp13Port=-1 --httpPort=9090
+if not working on 8080 port
+Now open jenkings create project freestyle
+Build: Command- cd c:.. goto path
+javac -classpath lib/*-d./bin./src/Rest/*.java
+javac -classpath lib/*-d./bin./src/Soap/*.java
+java -cp bin;lib/*org.testng.TestNG testng.xml
+
