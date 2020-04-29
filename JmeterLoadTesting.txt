@@ -1,0 +1,16 @@
+Jmeter:
+
+Add Test Plan- Add thread group:
+Number of thread user: Count (number of users)
+Ramp up period:1 Default
+Loop count:1 default
+
+-Goto sampler-Http request:
+Name:
+Servername: main url
+path: resources
+pass paramter with request: to add params (in paramters section if Get request) / Body Data: for Post request
+
+-Goto listeners- View results tree-
+
+
