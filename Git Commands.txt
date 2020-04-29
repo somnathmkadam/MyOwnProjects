@@ -10,3 +10,13 @@ git checkout : to get updates done by others
 
 
 git difftool HEAD (Check changes done in old file and new file)
+
+
+1. To get all projects first create local repository by git clone url command
+2. git pull to get all code from git
+
+
+git remote -v to check cuurent repository connected
+to change repository: git remote set-url origin https://github.com/USERNAME/REPOSITORY.git
+Verify new remote URL
+https://help.github.com/en/github/using-git/changing-a-remotes-url

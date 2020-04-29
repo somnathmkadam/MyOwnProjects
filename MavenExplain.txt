@@ -1,0 +1,107 @@
+MVN: maven: is software management and build management tool
+centeral repository of all jars/ dependencies
+mainatining structure across all organization
+flexibility in intgrating ci (Continoues integration tool Jenkins) tools and plugins for test automation framework
+
+my-app
+|-- pom.xml
+`-- src
+    |-- main
+    |   `-- java
+    |       `-- com
+    |           `-- mycompany
+    |               `-- app
+    |                   `-- App.java   all utility page object and test data and reusable files goes here
+    `-- test
+        `-- java
+            `-- com
+                `-- mycompany
+                    `-- app
+                        `-- AppTest.java all testing files goes here
+						
+		Download maven: give path of maven by creating new path as Maven_Home
+		and in path give path till bin folder
+		
+		mvn --version in command prompt
+		
+		1. group id is use to unquiely identify the project across all projects : rest_assured any selenium java
+		artifact id is sub project/jar name and last one version
+		
+		you can publish your code in maven by giving above parameter and anyone can simply download it into there local machines
+		
+		c:\users\somnath>
+		architype generate to generate new project
+		command in command prompt: mvn archetype:generate -DgroupId=ToolsQA -DartifactId=DemoMavenProject -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false.
+		mvn eclipse:ecplise command used to generate .class file inside artifactid folder so we can open maven in eclipse .classpath and .project file got created
+		
+		
+		group id is package name
+		artifact id is project name jars location is inside perferences: user settings
+		BDD: behavior development document Behavior-driven development
+		TestNg: pageobject, datadriven or hybride framework keyword framework.
+		cuucumber is execution system/framework: BDD framework
+		
+		used for : data driven, parameterization, Execution control, Hooks, Reports, automation utilities, 
+		use gerkin syntex
+		
+		feature: business requirements: validate credit card payment
+		
+		gerkin syntex:
+		Scenarios/ test case:
+		make minimum payment of credit card
+		Given: User is on Pay credit card page (Preconditions)
+		when: User fills all details and select minimum amount options (User actions to make) and: user clicks on pay options (And used for multiple actions also used in then/ multiple validations)
+		then: confirmation page is displayed
+		
+		Scenario: Pay statemnet balance.
+		Given:User is on Pay credit card page
+		when: User fill all the details and select statement balance option
+		And: user click pay button
+		Then: credit card onfirmation page is displayed
+		
+		Scenario: Enter another amount as 0
+		Given:User is on Pay credit card page
+		when: User fill all the details and select another amount as 0
+		And: user click pay button
+		Then: credit card onfirmation page is displayed
+        But: Error message is displayed
+		
+		All this given in feature file: in cuucumber filename.feature extension is like test suite
+		
+		Cucuumber support quick start maven 
+		
+		in pom and jars are stored in maven repository
+		install cuucumber java and junit https://mvnrepository.com/artifact/info.cukes/cucumber-java/1.2.5
+		
+		Terminlogies
+		1. Feature
+		2. tag step definiation file
+		3. Test runner
+		
+		Download: natural, m2e-apt 1.5.2, EGit, Eclipse xml editor and tools 3.12, Eclipse MarketPlace client 1.7.7, Buildship Gradle Integration 3.0
+		
+		1. first download plug in: natural   used when we create and feature file and show what is format and show if any error is present so you can fixed it before execution of your code
+		2. make feature package in java
+		3. create .feature file in feature package 
+		and enter scenarios in it
+		4. Create step defination class and tag it with feature file
+		
+		
+		Now step definiation file will get automatically installed in your machine by installing 
+		Tidy Gherkin crome extension just download it and paste all feature file and click on java steps
+		
+		Now save and close file and again reopen and so all errors are gone
+		now create test runner class and enter @runwith and @cucumber options
+		
+		
+		
+		
+		
+		
+		
+		
+
+						
+						
+
+

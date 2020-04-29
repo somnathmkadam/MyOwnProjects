@@ -1,0 +1,151 @@
+ 1. install java
+      https://www.oracle.com/technetwork/java/javase/downloads/index.html
+      2. set environment variable
+      search environmental variable and  set java home path in system variable
+      C:\Program Files\Java\jdk1.8.0_121
+      3. add bin folder path in path in environment variable
+      C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Java\jdk1.8.0_121;C:\Users\v-somnath.kadam\AppData\Local\Android\Sdk\platform-tools;C:\Users\v-somnath.kadam\AppData\Local\Android\Sdk\tools; C:\Users\v-somnath.kadam\AppData\Local\Android\Sdk\tools\bin; C:\apache-maven-3.6.1\bin;D:\files\android-sdk-windows\platform-tools; C:\Windows\SysWOW64;
+      4. download rest assured jars:
+      https://github.com/rest-assured/rest-assured/wiki/Downloads
+      
+      add in eclipse by right click and properties and add java build path and add external jars
+      
+       
+       
+       RestAssured:
+       1. baseuri
+       2. given: request headers,parameters,cookies
+       
+       header("key"."value").
+       cookie("","").
+       body()       
+       
+       3.  when: get, put, post(resource)
+      
+       4. then:
+       get a response
+       assertions to make sure we are getting correct response
+       
+        extract:
+       
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-->	 Representational state transfer (REST) is a software architectural style that defines a set of constraints to be used for creating Web services
+
+--> Rest API:- It is a set of rules that allow programs to talk to each other. The developer creates the API on the server and allows the client to talk to it 
+                client receives response via http protocol. client ex: android,iphone app or web/browser
+                REST determines how the API looks like. It stands for “Representational State Transfer”. 
+               It is a set of rules that developers follow when they create their API	 
+               
+--> Rest Assured: REST Assured is a Java library that provides a domain-specific language (DSL) for writing powerful, maintainable tests for RESTful APIs
+	         It supports POST, GET, PUT, DELETE, OPTIONS, PATCH and HEAD requests and can be used to validate and verify the response of these requests
+	 
+	 
+----> data can be in the form of json/xml Ex: weather report of any city so user enter zip of city and api server convert zip code into city name and
+     Fetch data from weather.com (domain) database. 
+     rest assured is independent of language means server database can be written in java and your code client written in .net. its gives data in the 
+     form of json/xml
+     
+     1. Endpoint: BaseURL resources and parameters
+     BaseURL/hostname: www.abc.com   where abc is hostname
+     	resources-- mutiple resources select one perticular resource
+     	parameter-- select one perticular thing from selected resource
+     	
+     parameters are separate by ?
+     https://www.google.com/search?q=orangebookvalue&rlz=1C1CHBD_enIN861IN861&oq=orangebook&aqs=chrome.0.0j69i57j0l6.5123j0j7&sourceid=chrome&ie=UTF-8
+     https://mail.google.com/mail/u/0/?tab=wm&ogbl#starred/FMfcgxwGCbCQDzRFjbjZdQSnmwHDTxvZ
+     
+      for GET request parameter can be pass with baseURL to retrieve details
+      
+      for post parameter should be send in body/payload as a xml/json data same for put and delete
+      Header is used for security key 
+      
+      put and delete is subset of post we can use post for both (Update/insert data into the server) 
+	  
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+RestProject:
+
+RestAssured.baseURI="https://secure.yatra.com";
+		
+		given().log().all()
+		.header("Content-Type","application/x-www-form-urlencoded")
+		.body(Body.Payload())
+		.when()
+		.post("ccwebapp/mobile/flight/mdomandroid/getPersuasionData.htm")
+		.then().log().all()
+		.assertThat().statusCode(200)
+		.body("interationType", equalTo("PersuasionAPI"))
+		.header("content-security-policy", "frame-ancestors 'self' *.yatra.com *.google.com");
+		
+		
+		
+Means:
+1. log all in given to show request and log all response show after then
+2. given().queryParam("","").header()
+   given : all input details
+   when: submit the API with resources,http method
+   then: validate the response
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+Extract Response from Request:
+String Response= given()...
+                 then().extract().response().asString();
+//asString() is used to convert a jsonValue to a String
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+get Values from string we use jsonpath
+JsonPath json = new JsonPath(response); //java class which convert string into json
+	String interactionId = json.getString("interactionId");
+	String header = json.getString("response.persuasionResp.message");
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+Read From file(Notepad): use: Files.readAllBytes(Paths.get(path))
+Ex:
+
+public void staticdata() throws IOException {
+		String response=	given().header("Content-Type","application/x-www-form-urlencoded").body(GenerateStringFromResource("C:\\Users\\kadam.somnath\\Desktop\\RestAssured.json")) 
+				.when().post("ccwebapp/mobile/flight/mdomandroid/getPersuasionData.htm")                                        //taken json data from file inside system
+				.then().assertThat().statusCode(200).extract().response().asString(); 
+		
+	}
+	
+	public static String GenerateStringFromResource(String path) throws IOException {
+		return new String (Files.readAllBytes(Paths.get(path)));
+	}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+path param:
+
+if in your request {} is given then it means that path param is given so we have to add path param in ur request
+ ex: /bsbsbb/nsdsn/{key}/bdbdb/dndnn 
+ 
+ Ex: when().post("sshsh/shhshs/{key}/sgsgs"); //passing path param or u can directly pass this in 
+ 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Session filter:
+SessionFilter session = new SessionFilter();
+//this session object in login request which stores session and then we can use this session for further uses
+Ex:
+given().pathParam("key", "1010").body("").filter(session).when().post()
+
+
+given().relaxedHTTPSValidation().header("","") //relax https validation used to bypass the https certification
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+String abc= js.get("fields.comments.comment["+i+"].id").toString(); //get zeroth location and get id
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+				 
+
+

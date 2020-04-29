@@ -1,0 +1,45 @@
+Postman:
+We can 
+
+https://docs.api.getpostman.com/?_ga=2.181054306.436374447.1586235841-1751534315.1586235841&version=latest#8ca888b7-ef54-f3b4-312f-3f3e2e2cf04e
+
+
+
+setup for newman:
+used to run postman collections through command line
+first install node js
+then install newman by npm install -g newman in cmd
+new run -h command used check all flags supported by newman
+then export your collection and run using cmd
+goto json file location
+$ newman run mycollection.json
+$ newman run mycollection.json --f foldername --f foldername to run spec folder
+
+to run with env download env file and then run both
+$ newman run mycollection.json -e env.json
+ 
+ to provide iterations: use -n 3 //three time executed
+ --delay-request 2000   //in mili sec
+ 
+-d filename.csv for data driven case
+
+
+now to run throught jenkins 
+1. install jenkins
+2. run war file
+3. create a new project 
+4. find newman path 
+for  this disable the hidden file and folders
+goto search search for hidden files and folder: select show files
+goto C:\Users\kadam.somnath\AppData\Roaming\npm\node_modules\newman\bin
+select execute window batch command
+then 
+cd C:\Users\kadam.somnath\AppData\Roaming\npm\node_modules\newman\bin
+node newman run C:\\Users\\kadam.somnath\\Desktop\\runcollection.json --disable-unicode
+
+disable unicode use to disable unnecessary coded data in console
+
+now build project and check runcollection is json file of postman which run using jenkins
+
+http://api.walmartlabs.com/v1/search?query=ipod&format=json&apiKey=75e3u4sgb2khg673cbv2gjup
+https://developer.walmartlabs.com/io-docs
